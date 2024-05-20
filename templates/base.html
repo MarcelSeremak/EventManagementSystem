@@ -1,10 +1,131 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'basejs.js' %}"></script>
+    {% block css %}
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+        nav.navbar {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            padding: 15px;
+        }
+        #sidebar-wrapper {
+            position: fixed;
+            top: 59px;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        .hamburger {
+            position: fixed;
+            top: 75px;
+            left: 35px;
+            z-index: 1100;
+            transition: all 0.3s;
+        }
+        .hamburger.is-open {
+            left: -35px;
+        }
+        .is-open {
+            transform: translateX(250px);
+        }
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: 0;
+        }
+        #page-content-wrapper {
+            width: 100%;
+            padding-top: 86px;
+        }
+        .overlay {
+            display: none;
+        }
+        .overlay.is-open {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1050;
+        }
+
+    </style>
+    {% endblock %}
 </head>
 <body>
+<nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="{% url 'homepage' %}">EvenToo-Event Management System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+
+<div id="wrapper">
+    <div class="overlay"></div>
+
+    <!-- Sidebar -->
+    <nav class="navbar navbar-inverse" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <a id="sidebar-brand-text" href="{% url 'homepage' %}"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+</svg><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
+  <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/>
+</svg><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-backpack2" viewBox="0 0 16 16">
+  <path d="M4.04 7.43a4 4 0 0 1 7.92 0 .5.5 0 1 1-.99.14 3 3 0 0 0-5.94 0 .5.5 0 1 1-.99-.14"/>
+  <path fill-rule="evenodd" d="M4 9.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm1 .5v3h6v-3h-1v.5a.5.5 0 0 1-1 0V10z"/>
+  <path d="M6 2.341V2a2 2 0 1 1 4 0v.341c2.33.824 4 3.047 4 5.659v1.191l1.17.585a1.5 1.5 0 0 1 .83 1.342V13.5a1.5 1.5 0 0 1-1.5 1.5h-1c-.456.607-1.182 1-2 1h-7a2.5 2.5 0 0 1-2-1h-1A1.5 1.5 0 0 1 0 13.5v-2.382a1.5 1.5 0 0 1 .83-1.342L2 9.191V8a6 6 0 0 1 4-5.659M7 2v.083a6 6 0 0 1 2 0V2a1 1 0 0 0-2 0M3 13.5A1.5 1.5 0 0 0 4.5 15h7a1.5 1.5 0 0 0 1.5-1.5V8A5 5 0 0 0 3 8zm-1-3.19-.724.362a.5.5 0 0 0-.276.447V13.5a.5.5 0 0 0 .5.5H2zm12 0V14h.5a.5.5 0 0 0 .5-.5v-2.382a.5.5 0 0 0-.276-.447L14 10.309Z"/>
+</svg></a>
+                </div>
+            </div>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#team">Stats</a></li>
+            <li><a href="#services">Report</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact">Sign up</a></li>
+            <li><a href="#contact">Log in</a></li>
+            <li><a href="#followme">Follow me</a></li>
+        </ul>
+    </nav>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+            <span class="hamb-bottom"></span>
+        </button>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
 
 </body>
 </html>
