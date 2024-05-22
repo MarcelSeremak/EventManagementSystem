@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'basejs.js' %}"></script>
-    {% block css %}
+    {% block css_files %}
+
+    {% endblock %}
     <style>
         body {
             overflow-x: hidden;
@@ -66,7 +68,6 @@
         }
 
     </style>
-    {% endblock %}
 </head>
 <body>
 <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
@@ -116,7 +117,7 @@
         </button>
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
+                <div class="col-lg-12 col-lg-offset-2">
                     {% block content %}
                     {% endblock %}
                 </div>

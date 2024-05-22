@@ -1,11 +1,10 @@
 from django.shortcuts import render, HttpResponse
-from django.views.generic import View
+from django.views.generic import View, FormView
+from .forms import Comment
 
 # Create your views here.
 
-class HomepageView(View):
-    def get(self, request):
-        return render(request, 'events/homepage.html')
-
-    def post(self, request):
-        pass
+class HomepageView(FormView):
+    template_name = "events/homepage.html"
+    form_class = Comment
+    success_url = "/"
