@@ -101,8 +101,12 @@
             <li><a href="#team">Stats</a></li>
             <li><a href="#services">Report</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="#contact">Sign up</a></li>
-            <li><a href="#contact">Log in</a></li>
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'register' %}">Sign up</a></li>
+            <li><a href="{% url 'login' %}">Log in</a></li>
+            {% else %}
+            <li><a href="{% url 'logout' %}">Log out</a></li>
+            {% endif %}
             <li><a href="#followme">Follow me</a></li>
         </ul>
     </nav>
