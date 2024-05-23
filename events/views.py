@@ -3,14 +3,26 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.views.generic import View, FormView
 from django.urls import reverse_lazy
-from .forms import Comment
+from .forms import CommentForm
+from .models import Comment
 
 # Create your views here.
 
 class HomepageView(FormView):
     template_name = "events/homepage.html"
-    form_class = Comment
+    form_class = CommentForm
     success_url = "/"
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.user = self.request.user
+        comment.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["comment_first"] = Comment.objects.order_by("-id")[0]
+        context["comments"] = Comment.objects.order_by("-id")[1:4]
+        return context
 
 class RegisterView(FormView):
     template_name = 'events/registration.html'
@@ -35,4 +47,4 @@ class LoginView(FormView):
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        return redirect('login')
+        return redirect('homepage')

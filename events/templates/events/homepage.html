@@ -162,12 +162,9 @@
 
             <div class="d-flex flex-start">
               <div>
-                <h6 class="fw-bold mb-1" >Maggie Marsh</h6>
+                <h6 class="fw-bold mb-1" >{{ comment_first.user.username }}</h6>
                 <p class="mb-0">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting
-                  industry. Lorem Ipsum has been the industry's standard dummy text ever
-                  since the 1500s, when an unknown printer took a galley of type and
-                  scrambled it.
+                    {{ comment_first.comment }}
                 </p>
               </div>
             </div>
@@ -175,39 +172,21 @@
 
           <hr class="my-0" />
 
+            <hr class="my-0" style="height: 1px;" />
+            {% for comment in comments %}
           <div class="card-body p-4 my-2"  style="background-color: #2ec4b6;">
             <div class="d-flex flex-start">
               <div>
-                <h6 class="fw-bold mb-1">Lara Stewart</h6>
+                <h6 class="fw-bold mb-1">{{ comment.user.username }}</h6>
                 <p class="mb-0">
-                  Contrary to popular belief, Lorem Ipsum is not simply random text. It
-                  has roots in a piece of classical Latin literature from 45 BC, making it
-                  over 2000 years old. Richard McClintock, a Latin professor at
-                  Hampden-Sydney College in Virginia, looked up one of the more obscure
-                  Latin words, consectetur, from a Lorem Ipsum passage, and going through
-                  the cites.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <hr class="my-0" style="height: 1px;" />
-
-          <div class="card-body p-4 my-2"  style="background-color: #2ec4b6;">
-            <div class="d-flex flex-start">
-              <div>
-                <h6 class="fw-bold mb-1">Alexa Bennett</h6>
-                <p class="mb-0">
-                  There are many variations of passages of Lorem Ipsum available, but the
-                  majority have suffered alteration in some form, by injected humour, or
-                  randomised words which don't look even slightly believable. If you are
-                  going to use a passage of Lorem Ipsum, you need to be sure.
+                  {{ comment.comment }}
                 </p>
               </div>
             </div>
           </div>
 
           <hr class="my-0" />
+            {% endfor %}
         </div>
       </div>
     </div>
@@ -215,6 +194,7 @@
 </section>
             </div>
         </div>
+        {% if user.is_authenticated %}
         <div class="col-lg-6">
 <div class="comment-prompt">
     <p>Want to say something? Give us a comment.</p>
@@ -224,7 +204,7 @@
     {% csrf_token %}
     <div class="form-group">
         <label for="id_username">Username:</label>
-        {{ form.username }}
+        {{ user.username }}
     </div>
     <div class="form-group">
         <label for="id_comment">Comment:</label>
@@ -234,6 +214,13 @@
 </form>
 
         </div>
+        {% else %}
+        <div class="col-lg-6">
+        <div class="comment-prompt">
+            <p>Want to say something? Log in/Register to give us a comment.</p>
+        </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 
