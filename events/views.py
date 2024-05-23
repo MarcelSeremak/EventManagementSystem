@@ -1,9 +1,9 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.views.generic import View, FormView
 from django.urls import reverse_lazy
-from .forms import CommentForm
+from .forms import CommentForm, CustomUserCreationForm
 from .models import Comment
 
 # Create your views here.
@@ -26,7 +26,7 @@ class HomepageView(FormView):
 
 class RegisterView(FormView):
     template_name = 'events/registration.html'
-    form_class = UserCreationForm
+    form_class = CustomUserCreationForm
     success_url = reverse_lazy('homepage')
 
     def form_valid(self, form):
