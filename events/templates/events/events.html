@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Events
+{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Event List</h2>
+        {% if user.is_authenticated %}
+        <a href="{% url 'create_event' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add Event
+        </a>
+        {% endif %}
+    </div>
+<div class="btn-group mb-4" role="group" aria-label="Sort buttons">
+    <a href="?sort_by=time" class="btn btn-primary"><i class="fas fa-clock"></i> Sort by Time</a>
+    <a href="?sort_by=place" class="btn btn-primary"><i class="fas fa-map-marker-alt"></i> Sort by Place</a>
+    <a href="?sort_by=title" class="btn btn-primary"><i class="fas fa-heading"></i> Sort by Title</a>
+    <a href="?sort_by=creator__username" class="btn btn-primary"><i class="fas fa-user"></i> Sort by Author</a>
+</div>
+    <div class="event-container p-4 rounded shadow-sm bg-white">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Subtitle</th>
+                    <th>Place</th>
+                    <th>Time</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td>{{ event.title }}</td>
+                        <td>{{ event.subtitle }}</td>
+                        <td>{{ event.place }}</td>
+                        <td>{{ event.time }}</td>
+                        <td>{{ event.creator.username }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No events available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

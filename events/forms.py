@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Event
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -17,3 +17,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         exclude = ("user", )
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model=Event
+        fields=['title', 'subtitle', 'description', 'time', 'place']
+        widgets={'time': forms.DateInput(attrs={'type': 'date'})}

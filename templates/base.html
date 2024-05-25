@@ -97,7 +97,7 @@
                 </div>
             </div>
             <li><a href="{% url 'homepage' %}">Home</a></li>
-            <li><a href="#events">Events</a></li>
+            <li><a href="{% url 'events' %}">Events</a></li>
             <li><a href="#team">Stats</a></li>
             <li><a href="#services">Report</a></li>
             <li><a href="#contact">Contact</a></li>
@@ -124,6 +124,7 @@
                 <div class="col-lg-12 col-lg-offset-2">
                     {% block content %}
                     {% endblock %}
+
                 </div>
             </div>
         </div>
@@ -131,6 +132,7 @@
     <!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->
+
 
 </body>
 </html>
