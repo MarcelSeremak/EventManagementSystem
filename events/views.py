@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import  redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View, FormView, CreateView, ListView
+from django.views.generic import View, FormView, CreateView, ListView, DetailView
 from django.urls import reverse_lazy
 from .forms import CommentForm, CustomUserCreationForm, EventForm
 from .models import Comment, Event
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
@@ -42,6 +44,34 @@ class EventListView(ListView):
         if sort_by not in allowed_sort_fields:
             sort_by = 'time'
         return Event.objects.all().order_by(sort_by)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        events = self.get_queryset()
+        events_data = []
+        for event in events:
+            place_coords = event.place.split(',')
+            place_lat = float(place_coords[0])
+            place_lng = float(place_coords[1])
+            events_data.append({
+                'id': event.id,
+                'title': event.title,
+                'subtitle': event.subtitle,
+                'place_lat': place_lat,
+                'place_lng': place_lng,
+                'time': event.time.isoformat(),
+                'creator_username': event.creator.username,
+            })
+        context['events_data'] = json.dumps(events_data, cls=DjangoJSONEncoder)
+        return context
+
+class EventDetailView(DetailView):
+    model = Event
+    template_name = 'events/event_detail.html'
+    context_object_name = 'event'
+
+    def get_queryset(self):
+        return Event.objects.filter(slug=self.kwargs['slug'])
 
 class RegisterView(FormView):
     template_name = 'events/registration.html'

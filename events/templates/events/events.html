@@ -6,9 +6,40 @@ Events
 
 {% block css_files %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+{% endblock %}
+
+{% block js_files %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const events = JSON.parse('{{ events_data|escapejs }}');
+
+        events.forEach(event => {
+            const mapId = `map-${event.id}`;
+            const mapContainer = document.getElementById(mapId);
+            if (mapContainer) {
+                const map = L.map(mapId).setView([event.place_lat, event.place_lng], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+                L.marker([event.place_lat, event.place_lng]).addTo(map)
+                    .bindPopup(`<b>${event.title}</b><br>${event.subtitle}`).openPopup();
+            }
+        });
+    });
+</script>
 {% endblock %}
 
 {% block content %}
+
+<style>
+    .map-container {
+        height: 200px;
+        width: 300px;
+        margin-bottom: 20px;
+    }
+</style>
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -19,12 +50,12 @@ Events
         </a>
         {% endif %}
     </div>
-<div class="btn-group mb-4" role="group" aria-label="Sort buttons">
-    <a href="?sort_by=time" class="btn btn-primary"><i class="fas fa-clock"></i> Sort by Time</a>
-    <a href="?sort_by=place" class="btn btn-primary"><i class="fas fa-map-marker-alt"></i> Sort by Place</a>
-    <a href="?sort_by=title" class="btn btn-primary"><i class="fas fa-heading"></i> Sort by Title</a>
-    <a href="?sort_by=creator__username" class="btn btn-primary"><i class="fas fa-user"></i> Sort by Author</a>
-</div>
+    <div class="btn-group mb-4" role="group" aria-label="Sort buttons">
+        <a href="?sort_by=time" class="btn btn-primary"><i class="fas fa-clock"></i> Sort by Time</a>
+        <a href="?sort_by=place" class="btn btn-primary"><i class="fas fa-map-marker-alt"></i> Sort by Place</a>
+        <a href="?sort_by=title" class="btn btn-primary"><i class="fas fa-heading"></i> Sort by Title</a>
+        <a href="?sort_by=creator__username" class="btn btn-primary"><i class="fas fa-user"></i> Sort by Author</a>
+    </div>
     <div class="event-container p-4 rounded shadow-sm bg-white">
         <table class="table table-striped">
             <thead>
@@ -41,9 +72,16 @@ Events
                     <tr>
                         <td>{{ event.title }}</td>
                         <td>{{ event.subtitle }}</td>
-                        <td>{{ event.place }}</td>
+                        <td>
+                            <div id="map-{{ event.id }}" class="map-container"></div>
+                        </td>
                         <td>{{ event.time }}</td>
                         <td>{{ event.creator.username }}</td>
+                        <td>
+                            <a href="{% url 'event_detail' event.slug %}" class="btn btn-info">
+                                <i class="fas fa-info-circle"></i> View Details
+                            </a>
+                        </td>
                     </tr>
                 {% empty %}
                     <tr>
@@ -54,4 +92,7 @@ Events
         </table>
     </div>
 </div>
+
 {% endblock %}
+
+

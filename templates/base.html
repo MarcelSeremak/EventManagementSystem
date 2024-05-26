@@ -14,6 +14,11 @@
     {% block css_files %}
 
     {% endblock %}
+
+    {% block js_files %}
+
+    {% endblock %}
+
     <style>
         body {
             overflow-x: hidden;
@@ -107,7 +112,7 @@
             {% else %}
             <li><a href="{% url 'logout' %}">Log out</a></li>
             {% endif %}
-            <li><a href="#followme">Follow me</a></li>
+            <li><a href="https://github.com/MarcelSeremak">Follow me</a></li>
         </ul>
     </nav>
     <!-- /#sidebar-wrapper -->
