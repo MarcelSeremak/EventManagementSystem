@@ -18,6 +18,8 @@ class Event(models.Model):
     time = models.DateField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField(unique=True, null=True, blank=True)
+    tickets_amount = models.IntegerField(null=True, blank=True)
+    price = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.title

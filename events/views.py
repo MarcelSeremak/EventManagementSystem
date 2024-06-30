@@ -73,6 +73,25 @@ class EventDetailView(DetailView):
     def get_queryset(self):
         return Event.objects.filter(slug=self.kwargs['slug'])
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        event_object = Event.objects.get(slug=self.kwargs['slug'])
+        event_data = []
+        place_coords = event_object.place.split(',')
+        place_lat = float(place_coords[0])
+        place_lng = float(place_coords[1])
+        event_data.append({
+            'id': event_object.id,
+            'title': event_object.title,
+            'subtitle': event_object.subtitle,
+            'place_lat': place_lat,
+            'place_lng': place_lng,
+            'time': event_object.time.isoformat(),
+            'creator_username': event_object.creator.username,
+            })
+        context['events_data'] = json.dumps(event_data, cls=DjangoJSONEncoder)
+        return context
+
 class RegisterView(FormView):
     template_name = 'events/registration.html'
     form_class = CustomUserCreationForm
