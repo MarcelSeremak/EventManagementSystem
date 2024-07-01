@@ -95,7 +95,8 @@
             <li><a href="{% url 'homepage' %}">Home</a></li>
             <li><a href="{% url 'events' %}">Events</a></li>
             <li><a href="#team">Stats</a></li>
-            <li><a href="#services">Report</a></li>
+            <li><a href="#services">Reports</a></li>
+            <li><a href="{% url 'cart_without_adding' %}">Cart</a></li>
             <li><a href="#contact">Contact</a></li>
             {% if not user.is_authenticated %}
             <li><a href="{% url 'register' %}">Sign up</a></li>
