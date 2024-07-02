@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.mail import send_mail
-from django.conf import settings
+from events.models import Event
+from payments.models import Ticket
+from django.db import models
+from django.contrib.auth.models import User
 from django.views.generic import View, FormView, CreateView, ListView, DetailView
 # Create your views here.
 
@@ -29,3 +31,5 @@ class ContactView(View):
 
         messages.success(request, 'Your message has been sent successfully!')
         return redirect('contact')
+
+
