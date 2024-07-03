@@ -21,5 +21,5 @@ class CommentForm(forms.ModelForm):
 class EventForm(forms.ModelForm):
     class Meta:
         model=Event
-        fields=['title', 'subtitle', 'description', 'time', 'place']
+        fields=['title', 'subtitle', 'description', 'time', 'place', 'tickets_amount', 'price']
         widgets={'time': forms.DateInput(attrs={'type': 'date'})}
